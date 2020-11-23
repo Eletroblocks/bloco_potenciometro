@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.01" unitdist="mm" unit="mm" style="lines" multiple="1" display="no" altdistance="0.1" altunitdist="mm" altunit="mm"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -9125,6 +9125,7 @@ Source: &lt;a href="https://www.mouser.in/datasheet/2/54/ptv09-777818.pdf"&gt; D
 <schematic_group name="CONNECTIONS"/>
 <schematic_group name="PWM_SIGNAL"/>
 <schematic_group name="POT_SINGAL"/>
+<schematic_group name="FILTER"/>
 </groups>
 <parts>
 <part name="GND5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
@@ -9148,6 +9149,9 @@ Source: &lt;a href="https://www.mouser.in/datasheet/2/54/ptv09-777818.pdf"&gt; D
 <part name="R3" library="eagle-ltspice" library_urn="urn:adsk.eagle:library:217" deviceset="R" device="R2512" package3d_urn="urn:adsk.eagle:package:13304/1" value="470R 1W"/>
 <part name="GND7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="R4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805W" package3d_urn="urn:adsk.eagle:package:23537/2" value="4K7"/>
+<part name="R5" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805W" package3d_urn="urn:adsk.eagle:package:23537/2" value="1k"/>
+<part name="C3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="100nF"/>
+<part name="GND8" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -9224,6 +9228,17 @@ Source: &lt;a href="https://www.mouser.in/datasheet/2/54/ptv09-777818.pdf"&gt; D
 <instance part="R4" gate="G$1" x="52.6769125" y="72.24724375" smashed="yes" rot="R270" grouprefs="POT_SINGAL">
 <attribute name="NAME" x="51.28100625" y="70.853259375" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="54.040890625" y="73.76108125" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="R5" gate="G$1" x="18.514575" y="-23.477365625" smashed="yes" grouprefs="FILTER">
+<attribute name="NAME" x="19.908559375" y="-24.873271875" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="17.0007375" y="-22.1133875" size="1.778" layer="96"/>
+</instance>
+<instance part="C3" gate="G$1" x="25.16181875" y="-30.394278125" smashed="yes" rot="R180" grouprefs="FILTER">
+<attribute name="NAME" x="20.84281875" y="-27.598278125" size="1.778" layer="95" rot="R270"/>
+<attribute name="VALUE" x="27.36281875" y="-25.898278125" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="GND8" gate="1" x="25.01671875" y="-38.343278125" smashed="yes" grouprefs="FILTER">
+<attribute name="VALUE" x="22.47671875" y="-41.083278125" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -9315,6 +9330,12 @@ Source: &lt;a href="https://www.mouser.in/datasheet/2/54/ptv09-777818.pdf"&gt; D
 <wire x1="11.911440625" y1="38.52" x2="23.66" y2="38.52" width="0.1524" layer="91"/>
 <junction x="23.66" y="38.52"/>
 </segment>
+<segment>
+<pinref part="GND8" gate="1" pin="GND"/>
+<pinref part="C3" gate="G$1" pin="1"/>
+<wire x1="25.01671875" y1="-35.803278125" x2="25.01671875" y2="-32.934278125" width="0.1524" layer="91" grouprefs="FILTER"/>
+<wire x1="25.01671875" y1="-32.934278125" x2="25.16181875" y2="-32.934278125" width="0.1524" layer="91" grouprefs="FILTER"/>
+</segment>
 </net>
 <net name="SIGNAL_OUT" class="0">
 <segment>
@@ -9324,13 +9345,14 @@ Source: &lt;a href="https://www.mouser.in/datasheet/2/54/ptv09-777818.pdf"&gt; D
 <label x="67.85" y="110.74" size="1.778" layer="95" xref="yes" grouprefs="CONNECTIONS"/>
 </segment>
 <segment>
-<pinref part="U1" gate="G$1" pin="C1"/>
-<wire x1="54.14" y1="23.28" x2="94.24" y2="23.28" width="0.1524" layer="91" grouprefs="PWM_SIGNAL"/>
-<label x="94.14" y="23.38" size="1.778" layer="95" xref="yes" grouprefs="PWM_SIGNAL"/>
-<pinref part="R3" gate="G$1" pin="2"/>
-<wire x1="54.14" y1="23.28" x2="85.603334375" y2="23.28" width="0.1524" layer="91"/>
-<wire x1="85.603334375" y1="23.28" x2="85.603334375" y2="27.67533125" width="0.1524" layer="91"/>
-<junction x="54.14" y="23.28"/>
+<pinref part="R5" gate="G$1" pin="2"/>
+<pinref part="C3" gate="G$1" pin="2"/>
+<wire x1="23.594575" y1="-23.477365625" x2="25.16181875" y2="-23.477365625" width="0.1524" layer="91" grouprefs="FILTER"/>
+<wire x1="25.16181875" y1="-23.477365625" x2="25.16181875" y2="-25.314278125" width="0.1524" layer="91" grouprefs="FILTER"/>
+<wire x1="23.594575" y1="-23.477365625" x2="38.32351875" y2="-23.477365625" width="0.1524" layer="91" grouprefs="FILTER"/>
+<wire x1="38.32351875" y1="-23.477365625" x2="38.32351875" y2="-23.5483375" width="0.1524" layer="91" grouprefs="FILTER"/>
+<junction x="23.594575" y="-23.477365625" grouprefs="FILTER"/>
+<label x="38.460678125" y="-23.309578125" size="1.27" layer="95" xref="yes" grouprefs="FILTER"/>
 </segment>
 </net>
 <net name="VCC" class="0">
@@ -9425,6 +9447,23 @@ Source: &lt;a href="https://www.mouser.in/datasheet/2/54/ptv09-777818.pdf"&gt; D
 <wire x1="52.6769125" y1="77.32724375" x2="52.6769125" y2="79.73" width="0.1524" layer="91" grouprefs="POT_SINGAL"/>
 <wire x1="52.6769125" y1="79.73" x2="52.71" y2="79.73" width="0.1524" layer="91" grouprefs="POT_SINGAL"/>
 <label x="52.68" y="79.73" size="0.8128" layer="95" rot="R90" xref="yes" grouprefs="POT_SINGAL"/>
+</segment>
+</net>
+<net name="PWM" class="0">
+<segment>
+<pinref part="R5" gate="G$1" pin="1"/>
+<wire x1="13.434575" y1="-23.477365625" x2="8.488678125" y2="-23.477365625" width="0.1524" layer="91" grouprefs="FILTER"/>
+<wire x1="8.488678125" y1="-23.477365625" x2="8.488678125" y2="-23.571196875" width="0.1524" layer="91" grouprefs="FILTER"/>
+<label x="8.417559375" y="-23.441659375" size="1.27" layer="95" rot="R180" xref="yes" grouprefs="FILTER"/>
+</segment>
+<segment>
+<pinref part="U1" gate="G$1" pin="C1"/>
+<wire x1="54.14" y1="23.28" x2="94.24" y2="23.28" width="0.1524" layer="91" grouprefs="PWM_SIGNAL"/>
+<label x="94.14" y="23.38" size="1.778" layer="95" xref="yes" grouprefs="PWM_SIGNAL"/>
+<pinref part="R3" gate="G$1" pin="2"/>
+<wire x1="54.14" y1="23.28" x2="85.603334375" y2="23.28" width="0.1524" layer="91"/>
+<wire x1="85.603334375" y1="23.28" x2="85.603334375" y2="27.67533125" width="0.1524" layer="91"/>
+<junction x="54.14" y="23.28"/>
 </segment>
 </net>
 </nets>
