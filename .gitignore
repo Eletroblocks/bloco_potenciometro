@@ -1,0 +1,10 @@
+
+# Mac OSX Files
+.DS_Store
+
+# Windows Files
+.Thumbs.db 
+
+# Eagle Temp Files
+*.*\#*
+*.*#*
